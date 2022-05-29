@@ -15,7 +15,6 @@ def create_app():
 
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'photomirror.sqlite'),
         UPLOAD_FOLDER=upload_folder
     )
 
