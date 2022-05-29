@@ -3,6 +3,17 @@ import os
 import pathlib
 
 
+def get_res_path(filename: str) -> str:
+    res_path = 'reversed_images/' + filename
+
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    res_path = os.path.join(basedir, res_path)
+
+    pathlib.Path(os.path.dirname(res_path)).mkdir(exist_ok=True)
+
+    return res_path
+
+
 def flip_image(path: str, flip_mode: str) -> str:
     image = Image.open(path)
 
@@ -15,13 +26,7 @@ def flip_image(path: str, flip_mode: str) -> str:
         output = temp.transpose(Image.FLIP_LEFT_RIGHT)
 
     raw_img_name = os.path.basename(path)
-
-    res_path = 'reversed_images/'+raw_img_name
-
-    basedir = os.path.abspath(os.path.dirname(__file__))
-    res_path = os.path.join(basedir, res_path)
-
-    pathlib.Path(os.path.dirname(res_path)).mkdir(exist_ok=True)
+    res_path = get_res_path(raw_img_name)
 
     output.save(res_path)
 
