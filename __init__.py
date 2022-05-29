@@ -3,7 +3,7 @@ import random
 import string
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, send_from_directory, flash, redirect
-from .flip_image import flip_image
+from .flip_image import get_flipped_image
 from .get_save_path import get_save_path
 
 
@@ -40,7 +40,7 @@ def create_app():
         save_path = get_save_path(filename)
 
         file.save(save_path)
-        reversed_image_filename = flip_image(save_path, flip_mode)
+        reversed_image_filename = get_flipped_image(save_path, flip_mode)
 
         return reversed_image_filename
 

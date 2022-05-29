@@ -1,8 +1,7 @@
 import os
-import random
-import string
 import pathlib
 from flask import current_app
+from .unique_path import get_unique_path
 
 
 def get_save_path(filename: str) -> str:
@@ -13,9 +12,6 @@ def get_save_path(filename: str) -> str:
 
     pathlib.Path(os.path.dirname(save_path)).mkdir(exist_ok=True)
 
-    while os.path.exists(save_path):
-        new_filename, save_ext = os.path.splitext(save_path)
-        new_filename += random.choice(string.ascii_letters + string.digits)
-        save_path = new_filename + save_ext
+    save_path = get_unique_path(save_path)
 
     return save_path
