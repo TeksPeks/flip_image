@@ -1,10 +1,8 @@
 import os
-import random
-import string
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, send_from_directory, flash, redirect
 from .flip_image import get_flipped_image
-from .get_save_path import get_save_path
+from .path_utils import get_save_path
 
 
 def create_app():
