@@ -7,13 +7,13 @@ from .path_utils import get_save_path
 
 def create_app():
     # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, instance_relative_config=True, static_url_path='', static_folder='frontend/build')
 
     upload_folder = 'raw_images'
 
     app.config.from_mapping(
         SECRET_KEY='dev',
-        UPLOAD_FOLDER=upload_folder
+        UPLOAD_FOLDER=upload_folder,
     )
 
     # ensure the instance folder exists
@@ -24,7 +24,7 @@ def create_app():
 
     @app.route('/')
     def home():
-        return render_template('main.html')
+        return send_from_directory(app.static_folder, 'index.html')
 
     @app.route('/upload', methods=['POST'])
     def upload():
