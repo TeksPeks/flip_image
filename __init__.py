@@ -1,7 +1,6 @@
 import os
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, send_from_directory, flash, redirect
-from flask_cors import CORS #comment this on deployment
 from flip_image import get_flipped_image
 from path_utils import get_save_path
 
@@ -9,8 +8,6 @@ from path_utils import get_save_path
 def create_app():
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True, static_url_path='', static_folder='frontend/build')
-
-    CORS(app) #comment this on deployment
 
     upload_folder = 'raw_images'
 
