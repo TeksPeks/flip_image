@@ -1,6 +1,6 @@
 from PIL import Image
 import os
-from .path_utils import get_res_path
+from path_utils import get_res_path
 
 
 def flip_image(raw_img: Image, flip_mode: str) -> Image:

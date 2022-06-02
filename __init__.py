@@ -2,8 +2,8 @@ import os
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, send_from_directory, flash, redirect
 from flask_cors import CORS #comment this on deployment
-from .flip_image import get_flipped_image
-from .path_utils import get_save_path
+from flip_image import get_flipped_image
+from path_utils import get_save_path
 
 
 def create_app():
