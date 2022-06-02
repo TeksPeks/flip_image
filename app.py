@@ -5,49 +5,43 @@ from flip_image import get_flipped_image
 from path_utils import get_save_path
 
 
-def create_app():
-    # create and configure the app
-    app = Flask(__name__, instance_relative_config=True, static_url_path='', static_folder='frontend/build')
 
-    upload_folder = 'raw_images'
+# create and configure the app
+app = Flask(__name__, instance_relative_config=True, static_url_path='', static_folder='frontend/build')
 
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-        UPLOAD_FOLDER=upload_folder,
-    )
+upload_folder = 'raw_images'
 
-    # ensure the instance folder exists
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
+app.config.from_mapping(
+    SECRET_KEY='dev',
+    UPLOAD_FOLDER=upload_folder,
+)
 
-    @app.route('/')
-    def home():
-        return send_from_directory(app.static_folder, 'index.html')
+# ensure the instance folder exists
+try:
+    os.makedirs(app.instance_path)
+except OSError:
+    pass
 
-    @app.route('/upload', methods=['POST'])
-    def upload():
-        if 'photo' not in request.files:
-            flash('No photo selected')
-            return redirect(request.url)
+@app.route('/')
+def home():
+    return send_from_directory(app.static_folder, 'index.html')
 
-        file = request.files['photo']
-        flip_mode = request.form['flip_mode']
-        filename = secure_filename(file.filename)
-        save_path = get_save_path(filename)
+@app.route('/upload', methods=['POST'])
+def upload():
+    if 'photo' not in request.files:
+        flash('No photo selected')
+        return redirect(request.url)
 
-        file.save(save_path)
-        reversed_image_filename = get_flipped_image(save_path, flip_mode)
+    file = request.files['photo']
+    flip_mode = request.form['flip_mode']
+    filename = secure_filename(file.filename)
+    save_path = get_save_path(filename)
 
-        return reversed_image_filename
+    file.save(save_path)
+    reversed_image_filename = get_flipped_image(save_path, flip_mode)
 
-    @app.route('/download/<path:filename>')
-    def download(filename):
-        return send_from_directory('reversed_images', filename)
+    return reversed_image_filename
 
-    return app
-
-
-if __name__ == "__main__":
-    create_app()
+@app.route('/download/<path:filename>')
+def download(filename):
+    return send_from_directory('reversed_images', filename)
