@@ -3,7 +3,7 @@ import downloadIcon from './assets/download.png'
 import './app.css'
 import { useState } from 'react'
 
-const serverPath = 'http://localhost:5000'
+const serverPath = 'https://myroslav-image-flip.herokuapp.com'
 
 function App() {
   const [type, setType] = useState('');
