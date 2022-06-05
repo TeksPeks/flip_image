@@ -54,15 +54,15 @@ function App () {
       <FileUpload photo={photo} setPhoto={val => setPhoto(val)} loading={loading} disabled={resultReady} />
       {!resultReady
         ? (
-      <>
-        <label htmlFor="mode-select">Choose flip mode...</label>
+      <div className='options-container'>
+        <label htmlFor="mode-select" className="select-label">Choose flip mode...</label>
         <select id="mode-select" className="select" value={type} onChange={e => setType(e.target.value)}>
             <option value="vertical">Vertical</option>
             <option value="horizontal">Horizontal</option>
             <option value="both">Both</option>
         </select>
         <button className="button" onClick={getReversedImage}>Submit</button>
-      </>
+      </div>
           )
         : (
         <>
