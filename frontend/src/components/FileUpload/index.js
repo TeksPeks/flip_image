@@ -17,7 +17,7 @@ const FileUpload = ({ photo, setPhoto, loading, disabled }) => {
     loading && 'drop-area--loading',
     disabled && 'drop-area--disabled'
   );
-  console.log(loading);
+
   return (
         <Dropzone disabled={disabled} multiple={false} accept={{ 'image/*': ['.jpeg', '.png', '.jpg'] }} onDrop={onDrop}>
             {({ getRootProps, getInputProps }) => (

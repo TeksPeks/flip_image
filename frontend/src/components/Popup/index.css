@@ -1,0 +1,24 @@
+.popup {
+    position: relative;
+    padding: 8px 16px;
+    background-color: rgba(255, 0, 0, 0.9);
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.popup:before, .popup:after {
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    content: ' ';
+    height: 10px;
+    width: 2px;
+    background-color: #fff;
+}
+.popup:before {
+    transform: rotate(45deg);
+}
+.popup:after {
+    transform: rotate(-45deg);
+}
