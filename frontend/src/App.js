@@ -57,7 +57,7 @@ function App () {
     setPhoto(newPhoto);
   };
 
-  const getReversedImage = () => {
+  const getReversedImage = async () => {
     const validationMessage = validateInput();
 
     if (validationMessage) {
@@ -67,7 +67,7 @@ function App () {
 
     setLoading(true);
     const formData = getFormData();
-    const filename = getReversedImageFilename(formData);
+    const filename = await getReversedImageFilename(formData);
 
     updatePhotoContent(filename);
 
@@ -77,7 +77,7 @@ function App () {
 
   const reset = () => {
     setPhoto(null);
-    setType(null);
+    setType('');
     setResultLink(null);
     setResultReady(false);
   };
