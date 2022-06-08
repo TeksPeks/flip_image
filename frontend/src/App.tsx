@@ -6,14 +6,15 @@ import './app.css';
 
 const serverPath = 'https://myroslav-image-flip.herokuapp.com';
 
-function App () {
-  const [type, setType] = useState('');
-  const [resultLink, setResultLink] = useState(null);
-  const [photo, setPhoto] = useState(null);
-  const [resultReady, setResultReady] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [popupMessage, setPopupMessage] = useState(null);
-  const [showPopup, setShowPopup] = useState(false);
+function App (): JSX.Element {
+  const [type, setType] = useState<null | string>(null);
+  const [resultLink, setResultLink] = useState<null | string>(null);
+  const [photo, setPhoto] = useState<null | File>(null);
+  const [resultReady, setResultReady] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [popupMessage, setPopupMessage] = useState<null | string>(null);
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [preview, setPreview] = useState<null | string>(null);
 
   const validateInput = () => {
     if (!photo) {
@@ -26,7 +27,7 @@ function App () {
     return null;
   };
 
-  const popup = message => {
+  const popup = (message: string) => {
     setPopupMessage(message);
     setShowPopup(true);
     setTimeout(() => setShowPopup(false), 3000);
@@ -35,26 +36,26 @@ function App () {
   const getFormData = () => {
     const formData = new FormData();
 
-    formData.append('photo', photo);
-    formData.append('flip_mode', type);
+    formData.append('photo', photo ?? '');
+    formData.append('flip_mode', type ?? '');
 
     return formData;
   };
 
-  const getReversedImageFilename = async formData => {
+  const getReversedImageFilename = async (formData: FormData) => {
     const res = await fetch(`${serverPath}/upload`, { method: 'POST', body: formData });
     const filename = await res.text();
 
     return filename;
   };
 
-  const updatePhotoContent = filename => {
+  const updatePhotoContent = (filename: string) => {
     const newResLink = `${serverPath}/download/${filename}`;
     setResultLink(newResLink);
+    setPreview(newResLink);
     const newPhoto = { ...photo };
-    newPhoto.preview = newResLink;
     newPhoto.name = filename;
-    setPhoto(newPhoto);
+    setPhoto(newPhoto as File);
   };
 
   const getReversedImage = async () => {
@@ -77,7 +78,7 @@ function App () {
 
   const reset = () => {
     setPhoto(null);
-    setType('');
+    setType(null);
     setResultLink(null);
     setResultReady(false);
   };
@@ -85,12 +86,12 @@ function App () {
   return (
     <div className="wrapper">
       <h1 className="heading">FLIP IMAGE</h1>
-      <FileUpload photo={photo} setPhoto={val => setPhoto(val)} loading={loading} disabled={resultReady} />
+      <FileUpload photo={photo} setPhoto={val => setPhoto(val)} loading={loading} disabled={resultReady} setPreview={val => setPreview(val)} preview={preview ?? ''} />
       {!resultReady
         ? (
       <div className='options-container'>
         <label htmlFor="mode-select" className="select-label">Choose flip mode</label>
-        <select id="mode-select" className="select" value={type} onChange={e => setType(e.target.value)}>
+        <select id="mode-select" className="select" value={type ?? ''} onChange={e => setType(e.target.value)}>
             <option value="" hidden disabled>...</option>
             <option value="vertical">Vertical</option>
             <option value="horizontal">Horizontal</option>
@@ -102,10 +103,10 @@ function App () {
         : (
         <>
           <button className='button' onClick={reset}>submit another image</button>
-          <a id="download" className="download button" href={resultLink} download="result"><span>download result</span><img src={downloadIcon} alt="" /></a>
+          <a id="download" className="download button" href={resultLink ?? ''} download="result"><span>download result</span><img src={downloadIcon} alt="" /></a>
         </>
           )}
-      <Popup message={popupMessage} isVisible={showPopup} onClose={() => setShowPopup(false)} />
+      <Popup message={popupMessage ?? ''} isVisible={showPopup} onClose={() => setShowPopup(false)} />
       <div className="info">All rights reserved by me, 2022 ©</div>
   </div>
   );

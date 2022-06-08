@@ -4,10 +4,17 @@ import classnames from 'classnames';
 import UploadImage from '../../assets/uploadImage.png';
 import './index.css';
 
-const FileUpload = ({ photo, setPhoto, loading, disabled }) => {
-  const onDrop = acceptedFiles => {
+const FileUpload = ({ photo, setPhoto, setPreview, preview, loading, disabled }: {
+  photo: File | null;
+  setPhoto: (photo: File) => void;
+  setPreview: (url: string) => void;
+  preview: string;
+  loading: boolean;
+  disabled: boolean;
+}): JSX.Element => {
+  const onDrop = <T extends File>(acceptedFiles: T[]) => {
     const newPhoto = acceptedFiles[0];
-    newPhoto.preview = URL.createObjectURL(newPhoto);
+    setPreview(URL.createObjectURL(newPhoto));
     setPhoto(newPhoto);
   };
 
@@ -27,7 +34,7 @@ const FileUpload = ({ photo, setPhoto, loading, disabled }) => {
                     {photo
                       ? (
                         <figure className='selected-image'>
-                            <img src={photo.preview} alt={photo.name} />
+                            <img src={preview} alt={photo.name} />
                             <figcaption>{photo.name}</figcaption>
                         </figure>
                         )
